@@ -1,44 +1,32 @@
 export class Piloto {
-  public formaConducir: FormaConducir = cabulero
+  public formaConducir: (pista: Pista) => number = cabulero
 
   public tiempoDeVuelta(pista: Pista) {
-    return this.formaConducir.tiempoDeVuelta(pista)
+    return this.formaConducir(pista)
   }
 }
 
-interface FormaConducir {
-  tiempoDeVuelta(pista: Pista): number
-}
-
-class Cabulero {
-  public tiempoDeVuelta(pista: Pista) {
-    return pista.largoPorVuelta * this.efectoMultiplicador(pista)
-  }
-
-  public efectoMultiplicador(pista: Pista) {
-    return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
-  }
-}
-
-export class Audaz {
-  constructor(private tiempoCurva = 1) { }
-
-  public tiempoDeVuelta(pista: Pista) {
-    return pista.cantidadCurvas * this.tiempoCurva * pista.largoPorVuelta
+export const audaz = (tiempoCurva = 1) => {
+  return (pista: Pista) => {
+    return pista.cantidadCurvas * tiempoCurva * pista.largoPorVuelta
   }
 }
 
 export const VALOR_BASE = 30
 
-export class Virtuoso {
-  constructor(private nivelVirtuosismo = 1) { }
-
-  public tiempoDeVuelta(pista: Pista) {
-    return pista.largoPorVuelta * (VALOR_BASE / this.nivelVirtuosismo)
+export const virtuoso = (nivelVirtuosismo = 1) => {
+  return (pista: Pista) => {
+    return pista.largoPorVuelta * (VALOR_BASE / nivelVirtuosismo)
   }
 }
 
-export const cabulero = new Cabulero()
+export const cabulero = (pista: Pista) => {
+  return pista.largoPorVuelta * efectoMultiplicador(pista)
+}
+
+function efectoMultiplicador(pista: Pista) {
+  return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
+}
 export class Pista {
   constructor(public nombre = '', public largoPorVuelta = 0, public cantidadCurvas = 7) { }
 

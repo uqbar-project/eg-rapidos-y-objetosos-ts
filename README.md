@@ -279,7 +279,11 @@ La primera forma de resolverlo es tener **union types**, es decir, la unión de 
 public formaConducir: Cabulero | Audaz | Virtuoso = cabulero
 ```
 
-Esto implica que cuando necesitemos agregar al seguidor, habrá que incorporarlo a esta definición taxativa de tipos. Otra variante podría ser trabajar con una interfaz:
+Esto implica que cuando necesitemos agregar al seguidor, habrá que incorporarlo a esta definición taxativa de tipos.
+
+### Interface
+
+Otra variante podría ser trabajar con una interfaz:
 
 ```ts
 public formaConducir: FormaConducir = cabulero
@@ -336,4 +340,88 @@ La variante de esta versióno la podés encontrar en la carpeta `version03`.
 ## Funciones
 
 Y dejamos para el final la posibilidad de construir las estrategias como funciones polimórficas, en todas entra una pista y en todas sale un número.
+
+Iniciamos el juego con el cabulero, que no mantiene estado y por lo tanto es la variante más sencilla
+
+```ts
+export const cabulero = (pista: Pista) => {
+  return pista.largoPorVuelta * efectoMultiplicador(pista)
+}
+```
+
+El efecto multiplicador es simplemente una función auxiliar (como trabajábamos en Haskell, sigue habiendo acoplamiento entre las funciones solo que no tenemos un agrupador):
+
+```ts
+function efectoMultiplicador(pista: Pista) {
+  return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
+}
+```
+
+Ah sí, typescript es híbrido y permite definir funciones por ahí. De hecho cabulero es una expresión lambda que podríamos haber definido con funciones.
+
+En el caso del audaz, recordemos la técnica de aumentar lo que una función conoce a partir de los parámetros, que aumentan el scope de cosas conocidas. Entonces para construir una estrategia audaz, necesitamos pasarle el tiempo de curva, y eso nos va a devolver la función que puede calcular el tiempo de vuelta:
+
+```ts
+export const audaz = (tiempoCurva = 1) => {
+  return (pista: Pista) => {
+    return pista.cantidadCurvas * tiempoCurva * pista.largoPorVuelta
+  }
+}
+```
+
+De manera similar funciona el virtuoso: 
+
+```ts
+export const virtuoso = (nivelVirtuosismo = 1) => {
+  return (pista: Pista) => {
+    return pista.largoPorVuelta * (VALOR_BASE / nivelVirtuosismo)
+  }
+}
+```
+
+Lo que cambia el piloto es poco:
+
+```ts
+export class Piloto {
+  public formaConducir: (pista: Pista) => number = cabulero // defino valor default
+
+  public tiempoDeVuelta(pista: Pista) {
+    return this.formaConducir(pista)   // la aplico
+  }
+```
+
+Aquí vemos que la forma de conducir se tipa a una función explícitamente. Y la forma de evaluar una función es pasándole parámetros con los paréntesis:
+
+```ts
+f    // es una función
+f()  // se aplica sin parámetros
+f(1) // se aplica con un parámetro
+```
+
+Y el test tampoco cambia mucho:
+
+```ts
+describe('piloto audaz', () => {
+  let pilotoAudaz: Piloto
+  let pista: Pista
+
+  beforeEach(() => {
+    pilotoAudaz = new Piloto()
+    // el único cambio es llamando a la función audaz que devuelve otra función
+    pilotoAudaz.formaConducir = audaz(3)
+    //
+    pista = new Pista('Estoril', 5, 5)
+  })
+
+  test('en una pista común', () => {
+    expect(75).toBe(pilotoAudaz.tiempoDeVuelta(pista))
+  })
+})
+```
+
+Cambiamos el import de la clase `Audaz` por la función `audaz`. Y eso es todo.
+
+## Para pensar
+
+Cuánto de lo que vimos se pareció a lo que viste en la cursada de Wollok, en un lenguaje que podemos llamar comercial. Cómo una misma solución puede encararse de varias maneras diferentes y cómo los paradigmas están en la cabeza de quien los programa.
 

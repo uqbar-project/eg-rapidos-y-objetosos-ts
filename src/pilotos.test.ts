@@ -1,4 +1,4 @@
-import { Audaz, Piloto, Pista } from './pilotos'
+import { audaz, Piloto, Pista } from './pilotos'
 
 describe('piloto cabulero', () => {
   let pilotoCabulero: Piloto
@@ -24,7 +24,7 @@ describe('piloto audaz', () => {
 
   beforeEach(() => {
     pilotoAudaz = new Piloto()
-    pilotoAudaz.formaConducir = new Audaz(3)
+    pilotoAudaz.formaConducir = audaz(3)
     pista = new Pista('Estoril', 5, 5)
   })
 
@@ -33,21 +33,3 @@ describe('piloto audaz', () => {
   })
 })
 
-describe('piloto con una forma de conducir especial', () => {
-  let pilotoAudaz: Piloto
-  let pista: Pista
-
-  beforeEach(() => {
-    pilotoAudaz = new Piloto()
-    pilotoAudaz.formaConducir = {
-      tiempoDeVuelta(unaPista: Pista) {
-        return unaPista.nombre.length * 10
-      }
-    }
-    pista = new Pista('Estoril')
-  })
-
-  test('en una pista', () => {
-    expect(70).toBe(pilotoAudaz.tiempoDeVuelta(pista))
-  })
-})
