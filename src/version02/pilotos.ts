@@ -7,8 +7,11 @@ export class Piloto {
 }
 
 export class Pista {
-  public nombre: string = ''
-  public largoPorVuelta = 0
+  constructor(public nombre = '', public largoPorVuelta = 0) { }
+
+  public nombrePar() {
+    return this.nombre.length % 2 === 0
+  }
 }
 
 export const MULTIPLICADOR_PAR = 10
@@ -20,8 +23,7 @@ class Cabulero {
   }
 
   public efectoMultiplicador(pista: Pista) {
-    const pistaNombrePar = pista.nombre.length % 2 === 0
-    return pistaNombrePar ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
+    return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
   }
 }
 

@@ -34,7 +34,7 @@ export class Piloto {
   private formaConducir = cabulero
 
   public tiempoDeVuelta(pista: Pista) {
-    return this.formaConducir.tiempoDeVuelta(this, pista)
+    return this.formaConducir.tiempoDeVuelta(pista)
   }
 }
 ```
@@ -58,7 +58,7 @@ Veamos cómo se implementa la estrategia: una clase, y luego un objeto instancia
 
 ```ts
 class Cabulero {
-  public tiempoDeVuelta(piloto: Piloto, pista: Pista) {
+  public tiempoDeVuelta(pista: Pista) {
     return pista.largoPorVuelta * this.efectoMultiplicador(pista)
   }
 
@@ -114,6 +114,7 @@ describe('cuando un piloto es cabulero', () => {
 
 - importamos las definición de Piloto del archivo correspondiente
 - un describe agrupará un conjunto de tests, al igual que en Wollok
+- el formato `(elemento) => { return elemento }` describe un _closure_ que recibe un parámetro y ejecuta el código que está entre llaves. Hay otros _syntactic sugars_ pero nos quedamos con éste por ahora.
 - podemos definir dentro de un describe variables `let` o `const`
 - y dentro del bloque `beforeEach` ejecutamos un conjunto de instrucciones antes de cada test (al igual que el fixture de Wollok)
 - como la pista no tiene comportamiento, es fácilmente reemplazable por un objeto plano de javascript (también llamado JSON), que no es otra cosa que un mapa/diccionario de claves/valores. Fíjense que podemos enviar un mensaje al piloto pasándole un objeto que cumple la misma interfaz, que es tener atributos **públicos** nombre y largoPorVuelta
@@ -136,7 +137,7 @@ export class Pista {
 ...
 
 class Cabulero {
-  public tiempoDeVuelta(piloto: Piloto, pista: Pista) {
+  public tiempoDeVuelta(pista: Pista) {
     return pista.largoPorVuelta * this.efectoMultiplicador(pista)
   }
 ```
@@ -144,12 +145,195 @@ class Cabulero {
 Creamos entonces un método nombrePar() en Pista:
 
 ```ts
-
+public nombrePar() {
+  return this.nombre.length % 2 === 0
+}
 ```
 
-## Segunda y tercera estrategia
+Eso permite que el Cabulero ya no tenga la responsabilidad de determinar si la pista tiene un nombre par:
 
-## Interfaces o union types
+```ts
+public efectoMultiplicador(pista: Pista) {
+  return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
+}
+```
+
+Pero nos rompieron los tests, porque estamos usando un objeto puro JSON que no entiende el mensaje `nombrePar()`:
+
+![nombrePar no es una función](images/nombreParNotAFunction.png)
+
+Efectivamente, tenemos que solucionarlo creando objetos Pista. Pero en lugar de crearlos en forma incómoda, asignando las referencias una a una
+
+```ts
+const pistaPar = new Pista()
+pistaPar.largoPorVuelta = 5
+pistaPar.nombre = 'Monaco'
+```
+
+vamos a pasarle parámetros al constructor:
+
+```ts
+const pistaPar = new Pista('Monaco', 5)
+```
+
+Y lo definimos de esta manera: 
+
+```ts
+constructor(public nombre = '', public largoPorVuelta = 0) { }
+```
+
+- ventaja 1: la inicialización se hace en un solo paso y el objeto queda consistente
+- ventaja 2: Typescript permite agregar el modificador `public`, `protected` o `private` y genera un atributo automáticamente (no hace falta definirlo ni hacer `this.nombre = nombre` por lo que mucha burocracia se elimina). También es posible definirle valores por defecto, con lo que sigue siendo válido `new Pista()` a secas, o `new Pista("Le Mans")`.
+- la desventaja: cuando tenés muchos parámetros puede ser un dolor de cabeza, y no se puede definir más de un constructor en Typescript
+
+Fíjense cómo quedan los tests:
+
+```ts
+let cabulero: Piloto
+
+describe('cuando un piloto es cabulero', () => {
+  beforeEach(() => {
+    cabulero = new Piloto()
+  })
+
+  test('en una pista par multiplica por 10', () => {
+    const pistaPar = new Pista('Monaco', 5)
+    expect(50).toBe(cabulero.tiempoDeVuelta(pistaPar))
+  })
+
+  test('en una pista impar multiplica por 9', () => {
+    const pistaImpar = new Pista('Estoril', 5)
+    expect(45).toBe(cabulero.tiempoDeVuelta(pistaImpar))
+  })
+})
+```
+
+Mucho más cortos en su definición, y funcionando perfectamente.
+
+Esta variante la podés encontrar en la carpeta `version02`.
+
+## Audaces y virtuosos
+
+Creamos las definiciones de audaces y virtuosos, que no pueden exportarse como simples objetos **singleton** ya que debemos configurar el tiempo de curva y el nivel de virtuosismo, respectivamente.
+
+```ts
+export class Audaz {
+  constructor(private tiempoCurva = 1) { }
+
+  public tiempoDeVuelta(pista: Pista) {
+    return pista.cantidadCurvas * this.tiempoCurva * pista.largoPorVuelta
+  }
+}
+
+export const VALOR_BASE = 30
+
+export class Virtuoso {
+  constructor(private nivelVirtuosismo = 1) { }
+
+  public tiempoDeVuelta(pista: Pista) {
+    return pista.largoPorVuelta * (VALOR_BASE / this.nivelVirtuosismo)
+  }
+}
+```
+
+Y los tests correspondientes,
+
+- una clase de equivalencia para un audaz
+- otra para un virtuoso, evitaremos utilizar el nivel de virtuosismo = 0 que sería un caso borde
+
+Para ello, necesitamos acceder al atributo `formaConducir`, por lo que vamos a optar por la opción más sencilla: definirlo como `public`. Hacemos algunos cambios adicionales, como tener tres referencias internas dentro de cada describe, y llamarlas mejor:
+
+```ts
+describe('piloto cabulero', () => {
+  let pilotoCabulero: Piloto
+
+  beforeEach(() => {
+    pilotoCabulero = new Piloto()
+  })
+
+  test('en una pista par multiplica por 10', () => {
+    const pistaPar = new Pista('Monaco', 5)
+    expect(50).toBe(pilotoCabulero.tiempoDeVuelta(pistaPar))
+  })
+
+  test('en una pista impar multiplica por 9', () => {
+    const pistaImpar = new Pista('Estoril', 5)
+    expect(45).toBe(pilotoCabulero.tiempoDeVuelta(pistaImpar))
+  })
+})
+```
+
+Pero cuando llegamos a nuestro segundo describe, nos aparece un error de tipos:
+
+![error de tipos](images/formaConducirPolimorfismo.png)
+
+Esto ocurre porque nosotros no anotamos la forma de conducir del piloto, sino que le dimos el valor por defecto cabulero, entonces le asigna el tipo cabulero.
+
+### Union types
+
+La primera forma de resolverlo es tener **union types**, es decir, la unión de los tipos posibles:
+
+![union types](images/tipandoFormaConducirUnionTypes.gif)
+
+```ts
+public formaConducir: Cabulero | Audaz | Virtuoso = cabulero
+```
+
+Esto implica que cuando necesitemos agregar al seguidor, habrá que incorporarlo a esta definición taxativa de tipos. Otra variante podría ser trabajar con una interfaz:
+
+```ts
+public formaConducir: FormaConducir = cabulero
+```
+
+La FormaConducir define una interfaz, la cáscara que debe ser implementada por los objetos a los que va a apuntar dicha referencia:
+
+```ts
+interface FormaConducir {
+  tiempoDeVuelta(pista: Pista): number
+}
+```
+
+Lo interesante, no hay que hacer nada en los tests ni en las definiciones de nuestras clases: cualquier clase u objeto que tenga una definición `tiempoDeVuelta(pista: Pista)` que devuelva un número puede calzar perfectamente en esta definición:
+
+![tipando forma de conducir con interfaces](images/tipandoFormaConducirInterface.gif)
+
+Typescript trabaja con **tipado estructural**, ya que cualquier estructura que tenga un método tiempoDeVuelta que reciba una pista y devuelva un número será considerada válida para las reglas de su sistema de tipos. Esto también se conoce como [**duck typing**](https://stackoverflow.com/questions/4205130/what-is-duck-typing):
+
+- si camina como pato
+- y hace cuac como un pato
+
+entonces debe ser un pato.
+
+> Si tiene el método `tiempoDeVuelta(pista: Pista): number` debe ser un `FormaConducir` válido.
+
+Incluso podríamos haber definido un objeto, con un método, al estilo Wollok:
+
+```ts
+describe('piloto con una forma de conducir especial', () => {
+  let pilotoAudaz: Piloto
+  let pista: Pista
+
+  beforeEach(() => {
+    pilotoAudaz = new Piloto()
+    pilotoAudaz.formaConducir = {
+      tiempoDeVuelta(unaPista: Pista) {
+        return unaPista.nombre.length * 10
+      }
+    }
+    pista = new Pista('Estoril')
+  })
+
+  test('en una pista', () => {
+    expect(70).toBe(pilotoAudaz.tiempoDeVuelta(pista))
+  })
+})
+```
+
+No es necesario asociar el objeto ni ninguna clase a la interfaz definida, como deberíamos hacerlo en otros lenguajes (ej. Java).
+
+La variante de esta versióno la podés encontrar en la carpeta `version03`.
 
 ## Funciones
+
+Y dejamos para el final la posibilidad de construir las estrategias como funciones polimórficas, en todas entra una pista y en todas sale un número.
 
