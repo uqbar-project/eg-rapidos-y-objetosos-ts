@@ -32,4 +32,3 @@ describe('piloto audaz', () => {
     expect(75).toBe(pilotoAudaz.tiempoDeVuelta(pista))
   })
 })
-

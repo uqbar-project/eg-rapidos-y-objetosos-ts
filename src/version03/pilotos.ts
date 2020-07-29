@@ -1,7 +1,7 @@
 export class Piloto {
   public formaConducir: FormaConducir = cabulero
 
-  public tiempoDeVuelta(pista: Pista) {
+  public tiempoDeVuelta(pista: Pista): number {
     return this.formaConducir.tiempoDeVuelta(pista)
   }
 }
@@ -23,7 +23,7 @@ class Cabulero {
 export class Audaz {
   constructor(private tiempoCurva = 1) { }
 
-  public tiempoDeVuelta(pista: Pista) {
+  public tiempoDeVuelta(pista: Pista): number {
     return pista.cantidadCurvas * this.tiempoCurva * pista.largoPorVuelta
   }
 }
@@ -33,7 +33,7 @@ export const VALOR_BASE = 30
 export class Virtuoso {
   constructor(private nivelVirtuosismo = 1) { }
 
-  public tiempoDeVuelta(pista: Pista) {
+  public tiempoDeVuelta(pista: Pista): number {
     return pista.largoPorVuelta * (VALOR_BASE / this.nivelVirtuosismo)
   }
 }
@@ -42,7 +42,7 @@ export const cabulero = new Cabulero()
 export class Pista {
   constructor(public nombre = '', public largoPorVuelta = 0, public cantidadCurvas = 7) { }
 
-  public nombrePar() {
+  public nombrePar(): boolean {
     return this.nombre.length % 2 === 0
   }
 }

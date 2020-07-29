@@ -42,7 +42,7 @@ describe('piloto con una forma de conducir especial', () => {
     pilotoAudaz.formaConducir = {
       tiempoDeVuelta(unaPista: Pista) {
         return unaPista.nombre.length * 10
-      }
+      },
     }
     pista = new Pista('Estoril')
   })

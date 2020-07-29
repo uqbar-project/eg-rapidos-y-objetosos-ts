@@ -1,7 +1,7 @@
 export class Piloto {
   private formaConducir = cabulero
 
-  public tiempoDeVuelta(pista: Pista) {
+  public tiempoDeVuelta(pista: Pista): number {
     return this.formaConducir.tiempoDeVuelta(pista)
   }
 }
@@ -9,7 +9,7 @@ export class Piloto {
 export class Pista {
   constructor(public nombre = '', public largoPorVuelta = 0) { }
 
-  public nombrePar() {
+  public nombrePar(): boolean {
     return this.nombre.length % 2 === 0
   }
 }
