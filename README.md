@@ -1,5 +1,5 @@
 
-# Clase práctica - intro a Typescript desde PDP
+# Clase práctica - intro a Typescript, yendo de OO a Funcional
 
 [![Build Status](https://travis-ci.org/uqbar-project/eg-rapidos-y-objetosos-ts.svg?branch=master)](https://travis-ci.org/uqbar-project/eg-rapidos-y-objetosos-ts)
 
