@@ -1,4 +1,7 @@
+
 # Clase práctica - intro a Typescript desde PDP
+
+[![Build Status](https://travis-ci.org/uqbar-project/eg-rapidos-y-objetosos-ts.svg?branch=master)](https://travis-ci.org/uqbar-project/eg-rapidos-y-objetosos-ts)
 
 ## Inicialización del proyecto
 
