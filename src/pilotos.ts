@@ -24,7 +24,7 @@ export const cabulero = (pista: Pista): number => {
   return pista.largoPorVuelta * efectoMultiplicador(pista)
 }
 
-function efectoMultiplicador(pista: Pista) {
+const efectoMultiplicador = (pista: Pista) => {
   return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
 }
 export class Pista {

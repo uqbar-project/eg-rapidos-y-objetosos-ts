@@ -352,7 +352,7 @@ describe('piloto con una forma de conducir especial', () => {
 
 No es necesario asociar el objeto ni ninguna clase a la interfaz definida, como deberíamos hacerlo en otros lenguajes (ej. Java).
 
-La variante de esta versióno la podés encontrar en la carpeta `version03`.
+La variante de esta versión la podés encontrar en la carpeta `version03`.
 
 ## Funciones
 
@@ -366,7 +366,7 @@ export const cabulero = (pista: Pista) => {
 }
 ```
 
-El efecto multiplicador es simplemente una función auxiliar (como trabajábamos en Haskell, sigue habiendo acoplamiento entre las funciones solo que no tenemos un agrupador):
+El efecto multiplicador es simplemente una función auxiliar (sigue habiendo acoplamiento entre las funciones solo que no tenemos un agrupador):
 
 ```ts
 function efectoMultiplicador(pista: Pista) {
@@ -374,7 +374,15 @@ function efectoMultiplicador(pista: Pista) {
 }
 ```
 
-Ah sí, typescript es híbrido y permite definir funciones por ahí. De hecho cabulero es una expresión lambda que podríamos haber definido con funciones.
+También podemos definir el efectoMultiplicador como una expresión lambda directamente:
+
+```ts
+const efectoMultiplicador = (pista: Pista) => {
+  return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
+}
+```
+
+Ah sí, typescript es híbrido y permite definir funciones.
 
 En el caso del audaz, recordemos la técnica de aumentar lo que una función conoce a partir de los parámetros, que aumentan el scope de cosas conocidas. Entonces para construir una estrategia audaz, necesitamos pasarle el tiempo de curva, y eso nos va a devolver la función que puede calcular el tiempo de vuelta:
 
@@ -441,4 +449,3 @@ Cambiamos el import de la clase `Audaz` por la función `audaz`. Y eso es todo.
 ## Para pensar
 
 Cuánto de lo que vimos se pareció a lo que viste en la cursada de Wollok, en un lenguaje que podemos llamar comercial. Cómo una misma solución puede encararse de varias maneras diferentes y cómo los paradigmas están en la cabeza de quien los programa.
-
