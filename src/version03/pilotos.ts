@@ -28,13 +28,13 @@ export class Audaz {
   }
 }
 
-export const VALOR_BASE = 30
+export const VALOR_BASE_VIRTUOSISMO = 30
 
 export class Virtuoso {
   constructor(private nivelVirtuosismo = 1) { }
 
   public tiempoDeVuelta(pista: Pista): number {
-    return pista.largoPorVuelta * (VALOR_BASE / this.nivelVirtuosismo)
+    return pista.largoPorVuelta * (VALOR_BASE_VIRTUOSISMO / this.nivelVirtuosismo)
   }
 }
 

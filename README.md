@@ -48,6 +48,7 @@ Typescript
 
 - tiene anotaciones de tipos, por eso el método tiempoDeVuelta debe indicar que recibe una pista, de tipo Pista. 
 - pero también trabaja con inferencia de tipos, por eso el atributo formaConducir no necesita anotarse con ningún tipo, por el momento será de tipo cabulero (que veremos a continuación).
+- `export class Piloto` permite que el archivo publique la clase. Desde otro archivo podemos hacer el [import](https://www.typescriptlang.org/docs/handbook/modules.html) correspondiente
 
 El método tiene el modificador `public` para indicar que es visible por cualquier otro objeto, mientras que la estrategia es un atributo `private`, lo que implica que no podremos obtener su referencia directamente:
 
@@ -59,7 +60,7 @@ piloto.tiempoDeVuelta(...)
 piloto.formaConducir...
 ```
 
-Veamos cómo se implementa la estrategia: una clase, y luego un objeto instancia de Cabulero, que se exportará como definición hacia afuera (en Typescript es necesario indicar qué definiciones queremos que se puedan importar desde otro archivo):
+Veamos cómo se implementa la estrategia: una clase, y luego un objeto instancia de Cabulero:
 
 ```ts
 class Cabulero {
@@ -74,6 +75,12 @@ class Cabulero {
 }
 
 export const cabulero = new Cabulero()
+```
+
+El cabulero es un **Singleton**, una referencia pública accesible con solo escribir:
+
+```ts
+import { cabulero } from 'pilotos'
 ```
 
 La Pista es casi una estructura más que una clase, no tiene por el momento comportamiento:
@@ -219,7 +226,12 @@ Esta variante la podés encontrar en la carpeta `version02`.
 
 ## Audaces y virtuosos
 
-Creamos las definiciones de audaces y virtuosos, que no pueden exportarse como simples objetos **singleton** ya que debemos configurar el tiempo de curva y el nivel de virtuosismo, respectivamente.
+Ahora agregaremos nuevas formas de conducción para los pilotos:
+
+- los **audaces** definen el tiempo como el tiempo por curva (específico para cada uno) * cantidad de curvas de la pista * largo por vuelta.
+- los **virtuosos**  tienen un nivel de virtuosismo distinto para cada uno pero que puede variar. El tiempo se calcula como el largo por vuelta * 30 / el nivel de virtuosismo. 
+
+Creamos las definiciones de audaces y virtuosos, que no pueden exportarse como simples objetos **singleton** ya que debemos configurar la información correspondiente a cada caso (pueden coexistir dos pilotos audaces con diferente tiempo por curva, o dos pilotos virtuosos con distinto nivel de virtuosismo).
 
 ```ts
 export class Audaz {
@@ -230,13 +242,13 @@ export class Audaz {
   }
 }
 
-export const VALOR_BASE = 30
+export const VALOR_BASE_VIRTUOSISMO = 30
 
 export class Virtuoso {
   constructor(private nivelVirtuosismo = 1) { }
 
   public tiempoDeVuelta(pista: Pista) {
-    return pista.largoPorVuelta * (VALOR_BASE / this.nivelVirtuosismo)
+    return pista.largoPorVuelta * (VALOR_BASE_VIRTUOSISMO / this.nivelVirtuosismo)
   }
 }
 ```
