@@ -23,7 +23,9 @@ Algunos archivos recomendamos copiarlos de este proyecto:
 
 ## El enunciado: Rápidos y Objetosos
 
-Vamos a trabajar con el [enunciado de uno de los TP](https://docs.google.com/document/d/1m4zWUbiUPI-Ck_Kx9QXLWM9xSq425fpAhXgV6WHQjpc/edit#), en particular nos interesa trabajar el tiempo que tarda un piloto en completar una vuelta. Esto depende de la estrategia que tenga: los cabuleros multiplican por 9 ó 10 el largo de la vuelta, dependiendo de si el nombre es par. Ya con eso podemos pensar en nuestras clases de equivalencia:
+Estamos modelando una aplicación para pilotos de carreras, y nos interesa resolver el tiempo que tarda un piloto en completar una vuelta. Esto depende de la estrategia que tenga: en primera instancia tendremos a los **cabuleros**, que tardan el largo de la vuelta de la pista (medido en kilómetros) * 10 ó 9, dependiendo de que el nombre de la pista tenga una cantidad par o impar de letras, respectivamente.
+
+Ya podemos pensar en base a ello nuestras clases de equivalencia:
 
 - un piloto cabulero corre en una pista de nombre par, supongamos que tiene un largo de 5 kms => debería tardar 50 segundos
 - un piloto cabulero corre en una pista de nombre impar, supongamos que tiene un largo de 5 kms => debería tardar 45 segundos
