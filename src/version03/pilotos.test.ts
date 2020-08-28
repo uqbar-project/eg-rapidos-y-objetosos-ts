@@ -1,24 +1,24 @@
-import { Audaz, Piloto, Pista } from './pilotos'
+import { Audaz, Piloto, Pista, Virtuoso } from './pilotos'
 
-describe('piloto cabulero', () => {
+describe('cuando un piloto es cabulero', () => {
   let pilotoCabulero: Piloto
 
   beforeEach(() => {
     pilotoCabulero = new Piloto()
   })
 
-  test('en una pista par multiplica por 10', () => {
+  test('su tiempo en una pista par multiplica por 10', () => {
     const pistaPar = new Pista('Monaco', 5)
     expect(50).toBe(pilotoCabulero.tiempoDeVuelta(pistaPar))
   })
 
-  test('en una pista impar multiplica por 9', () => {
+  test('su tiempo en una pista impar multiplica por 9', () => {
     const pistaImpar = new Pista('Estoril', 5)
     expect(45).toBe(pilotoCabulero.tiempoDeVuelta(pistaImpar))
   })
 })
 
-describe('piloto audaz', () => {
+describe('cuando un piloto es audaz', () => {
   let pilotoAudaz: Piloto
   let pista: Pista
 
@@ -28,18 +28,32 @@ describe('piloto audaz', () => {
     pista = new Pista('Estoril', 5, 5)
   })
 
-  test('en una pista común', () => {
+  test('su tiempo en una pista depende de la cantidad de curvas', () => {
     expect(75).toBe(pilotoAudaz.tiempoDeVuelta(pista))
   })
 })
 
-describe('piloto con una forma de conducir especial', () => {
-  let pilotoAudaz: Piloto
+describe('cuando un piloto es virtuoso', () => {
+  let pilotoVirtuoso: Piloto
+
+  beforeEach(() => {
+    pilotoVirtuoso = new Piloto()
+    pilotoVirtuoso.formaConducir = new Virtuoso(3)
+  })
+
+  test('su tiempo en una pista depende del nivel de virtuosismo', () => {
+    const pista = new Pista('Jacarepagua', 4)
+    expect(40).toBe(pilotoVirtuoso.tiempoDeVuelta(pista))
+  })
+})
+
+describe('cuando un piloto tiene una forma de conducir adhoc', () => {
+  let pilotoEspecial: Piloto
   let pista: Pista
 
   beforeEach(() => {
-    pilotoAudaz = new Piloto()
-    pilotoAudaz.formaConducir = {
+    pilotoEspecial = new Piloto()
+    pilotoEspecial.formaConducir = {
       tiempoDeVuelta(unaPista: Pista) {
         return unaPista.nombre.length * 10
       },
@@ -47,7 +61,7 @@ describe('piloto con una forma de conducir especial', () => {
     pista = new Pista('Estoril')
   })
 
-  test('en una pista', () => {
-    expect(70).toBe(pilotoAudaz.tiempoDeVuelta(pista))
+  test('su tiempo en la pista depende del largo del nombre de la pista', () => {
+    expect(70).toBe(pilotoEspecial.tiempoDeVuelta(pista))
   })
 })

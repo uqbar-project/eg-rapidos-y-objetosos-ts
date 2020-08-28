@@ -448,4 +448,4 @@ Cambiamos el import de la clase `Audaz` por la función `audaz`. Y eso es todo.
 
 ## Para pensar
 
-Cuánto de lo que vimos se pareció a lo que viste en la cursada de Wollok, en un lenguaje que podemos llamar comercial. Cómo una misma solución puede encararse de varias maneras diferentes y cómo los paradigmas están en la cabeza de quien los programa.
+Cuánto de lo que vimos se pareció a lo que viste en la cursada de Wollok, en un lenguaje (Typescript) que es comercial. Cómo una misma solución puede encararse de varias maneras diferentes y cómo los paradigmas están en la cabeza de quien los programa.
