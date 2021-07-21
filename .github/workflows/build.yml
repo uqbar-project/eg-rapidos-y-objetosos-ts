@@ -12,7 +12,12 @@ jobs:
           version: 14.x
       - run: npm install
       - run: npm run coverage
-      - uses: tintef/nyc-reporter-action
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPORTER: 'text' # defaults to 'text-summary'
+
+  finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: tintef/nyc-reporter-action
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPORTER: 'text' # defaults to 'text-summary'
