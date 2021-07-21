@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "coverage": "nyc --reporter=lcov npm test --reporter=text-lcov | coveralls"
+    "coverage": "nyc --reporter=lcov npm test"
   },
   "keywords": [
     "oo"
@@ -14,8 +14,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^26.0.24",
+    "coveralls": "^3.1.1",
     "jest": "^27.0.6",
-    "nyc": "^15.1.0",
+    "mocha-lcov-reporter": "^1.3.0",
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.5"
   },
