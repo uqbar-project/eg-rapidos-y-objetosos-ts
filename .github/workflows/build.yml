@@ -18,13 +18,8 @@ jobs:
           NODE_COVERALLS_DEBUG: 1
         with:
           github-token: ${{ secrets.github_token }}
-
-  finish:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@v1.1.0
+      - uses: tintef/nyc-reporter-action
         with:
-          github-token: ${{ secrets.github_token }}
-          parallel-finished: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORTER: 'text' # defaults to 'text-summary'
+          
