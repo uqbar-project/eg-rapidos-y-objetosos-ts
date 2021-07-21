@@ -15,6 +15,6 @@ jobs:
       - name: Coverage badge
         uses: demyanets/angular-coverage-badges-action@v1
         with:
-          coverage-summary-path: coverage-ts/eg-rapidos-y-objetosos-ts/coverage-summary.json
+          coverage-summary-path: coverage-ts/typescript-coverage.json
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
