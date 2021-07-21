@@ -12,7 +12,3 @@ jobs:
           version: 14.x
       - run: npm install
       - run: npm run test:ci
-      - name: Generating coverage badges
-        uses: actions/jest-badges-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
