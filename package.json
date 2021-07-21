@@ -4,7 +4,8 @@
   "description": "TP 2019 Rápidos y Objetosos",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coverage": "nyc --reporter=lcov npm test"
   },
   "keywords": [
     "oo"
