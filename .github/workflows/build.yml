@@ -17,7 +17,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-    - uses: tintef/nyc-reporter-action
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        REPORTER: 'text' # defaults to 'text-summary'
+      - name: Coverage badge
+        uses: demyanets/angular-coverage-badges-action@v1
+        with:
+          coverage-summary-path: coverage/eg-componentes-angular/coverage-summary.json
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
