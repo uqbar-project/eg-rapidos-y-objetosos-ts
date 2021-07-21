@@ -12,14 +12,7 @@ jobs:
           version: 14.x
       - run: npm install
       - run: npm run coverage
-      - name: Coveralls
-        uses: coverallsapp/github-action@v1.1.0
-        env:
-          NODE_COVERALLS_DEBUG: 1
-        with:
-          github-token: ${{ secrets.github_token }}
       - uses: tintef/nyc-reporter-action
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORTER: 'text' # defaults to 'text-summary'
-          
