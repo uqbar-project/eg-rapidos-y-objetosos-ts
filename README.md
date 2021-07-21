@@ -1,7 +1,7 @@
 
 # Clase práctica - intro a Typescript, yendo de OO a Funcional
 
-[![Build Status](https://travis-ci.org/uqbar-project/eg-rapidos-y-objetosos-ts.svg?branch=master)](https://travis-ci.org/uqbar-project/eg-rapidos-y-objetosos-ts)
+[![build](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml/badge.svg)](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml) ![Coverage](./badges/eg-rapidos-y-objetosos-ts/coverage.svg)
 
 ## Inicialización del proyecto
 

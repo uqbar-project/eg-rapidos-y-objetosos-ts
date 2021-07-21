@@ -12,14 +12,9 @@ jobs:
           version: 14.x
       - run: npm install
       - run: npm run coverage
-
-  finish:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
       - name: Coverage badge
         uses: demyanets/angular-coverage-badges-action@v1
         with:
-          coverage-summary-path: coverage/eg-componentes-angular/coverage-summary.json
+          coverage-summary-path: coverage/eg-rapidos-y-objetosos-ts/coverage-summary.json
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
