@@ -11,4 +11,4 @@ jobs:
         with:
           version: 14.x
       - run: npm install
-      - run: npm run test:ci
+      - run: npm run test
