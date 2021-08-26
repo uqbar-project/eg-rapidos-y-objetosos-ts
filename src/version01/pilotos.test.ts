@@ -12,7 +12,7 @@ describe('cuando un piloto es cabulero', () => {
       largoPorVuelta: 5,
       nombre: 'Monaco',
     }
-    expect(50).toBe(pilotoCabulero.tiempoDeVuelta(pistaPar))
+    expect(50).toBe(pilotoCabulero.tiempoDeVuelta(pistaPar)) 
   })
 
   test('su tiempo en una pista impar multiplica por 9', () => {

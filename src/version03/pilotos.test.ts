@@ -47,7 +47,7 @@ describe('cuando un piloto es virtuoso', () => {
   })
 })
 
-describe('cuando un piloto tiene una forma de conducir adhoc', () => {
+describe('cuando un piloto tiene una forma de conducir especial', () => {
   let pilotoEspecial: Piloto
   let pista: Pista
 
@@ -61,7 +61,7 @@ describe('cuando un piloto tiene una forma de conducir adhoc', () => {
     pista = new Pista('Estoril')
   })
 
-  test('su tiempo en la pista depende del largo del nombre de la pista', () => {
+  test('el tiempo de vuelta utiliza la regla definida en la forma de conducir especial', () => {
     expect(70).toBe(pilotoEspecial.tiempoDeVuelta(pista))
   })
 })

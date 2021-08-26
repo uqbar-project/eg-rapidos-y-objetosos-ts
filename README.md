@@ -58,11 +58,11 @@ Veamos cómo se implementa la estrategia: una clase, y luego un objeto instancia
 
 ```ts
 class Cabulero {
-  public tiempoDeVuelta(pista: Pista) {
+  tiempoDeVuelta(pista: Pista) {
     return pista.largoPorVuelta * this.efectoMultiplicador(pista)
   }
 
-  public efectoMultiplicador(pista: Pista) {
+  efectoMultiplicador(pista: Pista) {
     const pistaNombrePar = pista.nombre.length % 2 === 0
     return pistaNombrePar ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
   }
@@ -121,12 +121,12 @@ describe('cuando un piloto es cabulero', () => {
 - importamos las definición de Piloto del archivo correspondiente
 - un describe agrupará un conjunto de tests, al igual que en Wollok
 - el formato `(elemento) => { return elemento }` describe un _closure_ que recibe un parámetro y ejecuta el código que está entre llaves. Hay otros _syntactic sugars_ pero nos quedamos con éste por ahora.
-- podemos definir dentro de un describe variables `let` o `const`
+- podemos definir dentro de un describe variables `let` (referencias que pueden cambiar) o `const` (referencias que no pueden apuntarse a ningún otro valor)
 - y dentro del bloque `beforeEach` ejecutamos un conjunto de instrucciones antes de cada test (al igual que el fixture de Wollok)
 - como la pista no tiene comportamiento, es fácilmente reemplazable por un objeto plano de javascript (también llamado JSON), que no es otra cosa que un mapa/diccionario de claves/valores. Fíjense que podemos enviar un mensaje al piloto pasándole un objeto que cumple la misma interfaz, que es tener atributos **públicos** nombre y largoPorVuelta
 - en lugar de asserts trabajamos con expectativas, que tiene patrones de trabajo muy similares (qué espero vs. qué obtengo)
 
-![JEST demo](./images/jest.gif)
+![JEST demo](./images/jest01.gif)
 
 Esta versión la podrás encontrar en la carpeta `version01`.
 
@@ -143,7 +143,7 @@ export class Pista {
 ...
 
 class Cabulero {
-  public tiempoDeVuelta(pista: Pista) {
+  tiempoDeVuelta(pista: Pista) {
     return pista.largoPorVuelta * this.efectoMultiplicador(pista)
   }
 ```
@@ -151,7 +151,7 @@ class Cabulero {
 Creamos entonces un método nombrePar() en Pista:
 
 ```ts
-public nombrePar() {
+nombrePar() {
   return this.nombre.length % 2 === 0
 }
 ```
@@ -159,7 +159,7 @@ public nombrePar() {
 Eso permite que el Cabulero ya no tenga la responsabilidad de determinar si la pista tiene un nombre par:
 
 ```ts
-public efectoMultiplicador(pista: Pista) {
+efectoMultiplicador(pista: Pista) {
   return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
 }
 ```
@@ -189,8 +189,8 @@ constructor(public nombre = '', public largoPorVuelta = 0) { }
 ```
 
 - ventaja 1: la inicialización se hace en un solo paso y el objeto queda consistente
-- ventaja 2: Typescript permite agregar el modificador `public`, `protected` o `private` y genera un atributo automáticamente (no hace falta definirlo ni hacer `this.nombre = nombre` por lo que mucha burocracia se elimina). También es posible definirle valores por defecto, con lo que sigue siendo válido `new Pista()` a secas, o `new Pista("Le Mans")`.
-- la desventaja: cuando tenés muchos parámetros puede ser un dolor de cabeza, y no se puede definir más de un constructor en Typescript
+- ventaja 2: Typescript permite agregar el modificador `public`, `protected` o `private` en el parámetro de un constructor y genera un atributo automáticamente (no hace falta definirlo ni hacer `this.nombre = nombre` por lo que mucha burocracia se elimina). También es posible definirle valores por defecto, con lo que sigue siendo válido `new Pista()` a secas, o `new Pista("Le Mans")`.
+- la desventaja: cuando tenés muchos parámetros puede ser un dolor de cabeza, y **no se puede definir más de un constructor en Typescript**
 
 Fíjense cómo quedan los tests:
 
@@ -231,7 +231,7 @@ Creamos las definiciones de audaces y virtuosos, que no pueden exportarse como s
 export class Audaz {
   constructor(private tiempoCurva = 1) { }
 
-  public tiempoDeVuelta(pista: Pista) {
+  tiempoDeVuelta(pista: Pista) {
     return pista.cantidadCurvas * this.tiempoCurva * pista.largoPorVuelta
   }
 }
@@ -241,7 +241,7 @@ export const VALOR_BASE_VIRTUOSISMO = 30
 export class Virtuoso {
   constructor(private nivelVirtuosismo = 1) { }
 
-  public tiempoDeVuelta(pista: Pista) {
+  tiempoDeVuelta(pista: Pista) {
     return pista.largoPorVuelta * (VALOR_BASE_VIRTUOSISMO / this.nivelVirtuosismo)
   }
 }
@@ -294,7 +294,7 @@ Esto implica que cuando necesitemos agregar al seguidor, habrá que incorporarlo
 
 ### Interface
 
-Otra variante podría ser trabajar con una interfaz:
+Otra variante podría ser trabajar con una interfaz. En la clase Pilota definimos la anotación de tipo para la forma de conducir:
 
 ```ts
 public formaConducir: FormaConducir = cabulero
@@ -308,7 +308,7 @@ interface FormaConducir {
 }
 ```
 
-Lo interesante, no hay que hacer nada en los tests ni en las definiciones de nuestras clases: cualquier clase u objeto que tenga una definición `tiempoDeVuelta(pista: Pista)` que devuelva un número puede calzar perfectamente en esta definición:
+Lo interesante, no hay que hacer nada más: cualquier clase u objeto que tenga una definición `tiempoDeVuelta(pista: Pista)` que devuelva un número puede calzar perfectamente en esta definición:
 
 ![tipando forma de conducir con interfaces](images/tipandoFormaConducirInterface.gif)
 
@@ -338,7 +338,7 @@ describe('piloto con una forma de conducir especial', () => {
     pista = new Pista('Estoril')
   })
 
-  test('en una pista', () => {
+  test('el tiempo de vuelta utiliza la regla definida en la forma de conducir especial', () => {
     expect(70).toBe(pilotoAudaz.tiempoDeVuelta(pista))
   })
 })
@@ -355,7 +355,7 @@ Y dejamos para el final la posibilidad de construir las estrategias como funcion
 Iniciamos el juego con el cabulero, que no mantiene estado y por lo tanto es la variante más sencilla
 
 ```ts
-export const cabulero = (pista: Pista) => {
+export const cabulero = (pista: Pista): number => {
   return pista.largoPorVuelta * efectoMultiplicador(pista)
 }
 ```
@@ -363,7 +363,7 @@ export const cabulero = (pista: Pista) => {
 El efecto multiplicador es simplemente una función auxiliar (sigue habiendo acoplamiento entre las funciones solo que no tenemos un agrupador):
 
 ```ts
-function efectoMultiplicador(pista: Pista) {
+function efectoMultiplicador(pista: Pista): number {
   return pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
 }
 ```
@@ -377,6 +377,16 @@ const efectoMultiplicador = (pista: Pista) => {
 ```
 
 Ah sí, typescript es híbrido y permite definir funciones.
+
+Otro _syntactic sugar_ que trae TS es que podemos omitir el return si la definición de nuestra función es de una sola línea y devuelve un valor:
+
+```ts
+export const cabulero = (pista: Pista): number => pista.largoPorVuelta * efectoMultiplicador(pista)
+
+const efectoMultiplicador = (pista: Pista): number => pista.nombrePar() ? MULTIPLICADOR_PAR : MULTIPLICADOR_IMPAR
+```
+
+Nuestro consejo es que vayas familiarizándote de a poco con el lenguaje y sus variantes.
 
 En el caso del audaz, recordemos la técnica de aumentar lo que una función conoce a partir de los parámetros, que aumentan el scope de cosas conocidas. Entonces para construir una estrategia audaz, necesitamos pasarle el tiempo de curva, y eso nos va a devolver la función que puede calcular el tiempo de vuelta:
 
@@ -402,9 +412,9 @@ Lo que cambia el piloto es poco:
 
 ```ts
 export class Piloto {
-  public formaConducir: (pista: Pista) => number = cabulero // defino valor default
+  formaConducir: (pista: Pista) => number = cabulero // defino valor default
 
-  public tiempoDeVuelta(pista: Pista) {
+  tiempoDeVuelta(pista: Pista) {
     return this.formaConducir(pista)   // la aplico
   }
 ```
