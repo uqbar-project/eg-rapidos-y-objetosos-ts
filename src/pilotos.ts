@@ -1,7 +1,7 @@
 export class Piloto {
-  public formaConducir: (pista: Pista) => number = cabulero
+  formaConducir: (pista: Pista) => number = cabulero
 
-  public tiempoDeVuelta(pista: Pista): number {
+  tiempoDeVuelta(pista: Pista): number {
     return this.formaConducir(pista)
   }
 }
@@ -30,7 +30,7 @@ const efectoMultiplicador = (pista: Pista) => {
 export class Pista {
   constructor(public nombre = '', public largoPorVuelta = 0, public cantidadCurvas = 7) { }
 
-  public nombrePar(): boolean {
+  nombrePar(): boolean {
     return this.nombre.length % 2 === 0
   }
 }

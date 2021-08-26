@@ -42,6 +42,18 @@ piloto.tiempoDeVuelta(...)
 piloto.formaConducir...
 ```
 
+Por defecto [la visibilidad de los métodos es pública](https://www.typescriptlang.org/docs/handbook/2/classes.html#member-visibility), así que podemos escribir de ahora en más:
+
+```ts
+export class Piloto {
+  private formaConducir = cabulero
+
+  tiempoDeVuelta(pista: Pista) {
+    return this.formaConducir.tiempoDeVuelta(pista)
+  }
+}
+```
+
 Veamos cómo se implementa la estrategia: una clase, y luego un objeto instancia de Cabulero:
 
 ```ts
