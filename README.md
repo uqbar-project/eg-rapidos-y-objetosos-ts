@@ -3,24 +3,6 @@
 
 [![build](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml/badge.svg)](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml) ![Coverage](./coverage/badge-statements.svg) ![Coverage](./coverage/badge-lines.svg)
 
-## Inicialización del proyecto
-
-Si querés arrancar el proyecto desde cero, tenés que instalar Node, NPM, crearte una carpeta y seguí estos pasos
-
-```bash
-npm init
-npm i -g typescript
-npm i --save-dev typescript
-npm i -g ts-node
-npm i jest @types/jest ts-jest -D
-```
-
-Algunos archivos recomendamos copiarlos de este proyecto:
-
-- `tsconfig.json`: contiene la configuración para transpilar typescript a javascript
-- `tslint.json`: las reglas que queremos aplicar para "compilar" un archivo typescript
-- `.gitignore`: qué archivos no nos interesa subir a git
-
 ## El enunciado: Rápidos y Objetosos
 
 Estamos modelando una aplicación para pilotos de carreras, y nos interesa resolver el tiempo que tarda un piloto en completar una vuelta. Esto depende de la estrategia que tenga: en primera instancia tendremos a los **cabuleros**, que tardan el largo de la vuelta de la pista (medido en kilómetros) * 10 ó 9, dependiendo de que el nombre de la pista tenga una cantidad par o impar de letras, respectivamente.
