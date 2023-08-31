@@ -294,7 +294,7 @@ Esto implica que cuando necesitemos agregar al seguidor, habrá que incorporarlo
 
 ### Interface
 
-Otra variante podría ser trabajar con una interfaz. En la clase Pilota definimos la anotación de tipo para la forma de conducir:
+Otra variante podría ser trabajar con una interfaz. En la clase Piloto definimos la anotación de tipo para la forma de conducir:
 
 ```ts
 public formaConducir: FormaConducir = cabulero
