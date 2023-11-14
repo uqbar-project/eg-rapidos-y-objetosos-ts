@@ -35,9 +35,11 @@ Typescript
 El método tiene el modificador `public` para indicar que es visible por cualquier otro objeto, mientras que la estrategia es un atributo `private`, lo que implica que no podremos obtener su referencia directamente:
 
 ```ts
-// es válido
 const piloto = new Piloto()
+
+// es válido
 piloto.tiempoDeVuelta(...)
+
 // no es válido
 piloto.formaConducir...
 ```
@@ -88,7 +90,7 @@ export class Pista {
 
 ## Incorporando los tests
 
-El framework de testeo unitario que utilizaremos es JEST, y dentro de VSC tenemos un plugin que se adapta bastante bien:
+El framework de testeo unitario que utilizaremos es JEST, y dentro de VSC tenemos un [plugin](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest) que se adapta bastante bien:
 
 ```ts
 import { Piloto } from './pilotos'
