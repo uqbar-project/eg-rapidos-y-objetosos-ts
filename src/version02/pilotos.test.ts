@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, test } from 'vitest'
 import { Piloto, Pista } from './pilotos'
 
 let pilotoCabulero: Piloto

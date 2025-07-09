@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, test } from 'vitest'
 import { audaz, Piloto, Pista, virtuoso } from './pilotos'
 
 describe('cuando un piloto es cabulero', () => {
