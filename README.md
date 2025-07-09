@@ -1,7 +1,7 @@
 
 # Clase práctica - intro a Typescript, yendo de OO a Funcional
 
-[![build](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml/badge.svg)](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml) ![Coverage](./coverage/badge-statements.svg) ![Coverage](./coverage/badge-lines.svg)
+[![build](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml/badge.svg)](https://github.com/uqbar-project/eg-rapidos-y-objetosos-ts/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/uqbar-project/eg-rapidos-y-objetosos-ts/graph/badge.svg?token=IELPQXQNL2)](https://codecov.io/gh/uqbar-project/eg-rapidos-y-objetosos-ts)
 
 ## El enunciado: Rápidos y Objetosos
 
